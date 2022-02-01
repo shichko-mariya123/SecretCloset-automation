@@ -2,41 +2,24 @@ package screens;
 
 import aquality.appium.mobile.application.AqualityServices;
 import aquality.appium.mobile.elements.interfaces.ILabel;
-import aquality.appium.mobile.screens.Screen;
-import entity.Seller;
+import models.Seller;
 import org.openqa.selenium.By;
 
-public class SellerScreen extends Screen {
+public class SellerScreen extends BaseControlsScreen {
 
     public SellerScreen() {
-        super(By.id("android:id/content"), "Seller page");
+        super(By.name("Member"), "Seller screen");
     }
 
-    private final ILabel sellerName = getElementFactory().getLabel(By.className("android.widget.TextView"),
-            "Seller name label");
-    private final ILabel sellerCityFrom = getElementFactory().getLabel(By.id("com.zdv.secretcloset:id/tvItemSellerCity"),
-            "Seller city from label");
+    private final ILabel lblSellerName = getElementFactory().getLabel(By.className("android.widget.TextView"),
+            "Seller name");
+    private final ILabel lblSellerCityFrom = getLabel("tvItemSellerCity",  "Seller city from label");
 
-    private Seller sellerFromSellerScreen;
-
-    public String getSellerName() {
-        return sellerName.getText();
+    public Seller getSellerInfo(){
+        AqualityServices.getLogger().info("Get information about Seller from Seller Screen");
+        return Seller.builder()
+                .name(lblSellerName.getText())
+                .city(lblSellerCityFrom.getText())
+                .build();
     }
-
-    public String getSellerCityNameFrom() {
-        return sellerCityFrom.getText();
-    }
-
-    public void setSellerFromSellerScreen(){
-        sellerFromSellerScreen = new Seller();
-        sellerFromSellerScreen.setCity(getSellerCityNameFrom());
-        sellerFromSellerScreen.setName(getSellerName());
-    }
-
-    public Seller getSellerFromSellerScreen(){
-        setSellerFromSellerScreen();
-        AqualityServices.getLogger().info("Get Seller information from Seller screen");
-        return sellerFromSellerScreen;
-    }
-
 }

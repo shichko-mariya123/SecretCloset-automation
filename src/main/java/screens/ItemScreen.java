@@ -2,86 +2,46 @@ package screens;
 
 import aquality.appium.mobile.application.AqualityServices;
 import aquality.appium.mobile.elements.interfaces.ILabel;
-import aquality.appium.mobile.screens.Screen;
-import entity.Item;
-import entity.Seller;
+import models.Item;
+import models.Seller;
 import org.openqa.selenium.By;
 
-public class ItemScreen extends Screen {
+public class ItemScreen extends BaseControlsScreen {
 
     public ItemScreen() {
-        super(By.id("android:id/content"), "Item page");
+        super(By.name("Buy"), "Item screen");
     }
 
-    private static final String locatorTemplate = "com.zdv.secretcloset:id/%s";
-    private final ILabel itemName = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvItemBrand")),
-            "Item name label");
-    private final ILabel originalItemPrise = getElementFactory().getLabel(By.id(String
-            .format(locatorTemplate, "tvItemOriginalPrice")), "Original item prise label");
-    private final ILabel itemDiscount = getElementFactory().getLabel(By.id(String
-            .format(locatorTemplate, "tvItemDiscount")), "Item discount");
-    private final ILabel itemPrice = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvItemPrice")),
-            "Item price");
-    private final ILabel sellerName = getElementFactory().getLabel(By.id(String
-            .format(locatorTemplate, "tvItemSellerName")), "Seller name");
-    private final ILabel sellerCityFrom = getElementFactory().getLabel(By.id(String
-            .format(locatorTemplate, "tvItemSellerCity")), "Seller city from");
-
-    private Item itemFromItemScreen;
-    private Seller sellerFromItemScreen;
-
-    public String getItemName() {
-        return itemName.getText();
-    }
-
-    public String getOriginalItemPrise() {
-        return originalItemPrise.getText();
-    }
-
-    public String getItemDiscount() {
-        return itemDiscount.getText();
-    }
-
-    public String getItemPrice() {
-        return itemPrice.getText();
-    }
-
-    public String getSellerName() {
-        return sellerName.getText();
-    }
-
-    public String getSellerCityNameFrom() {
-        return sellerCityFrom.getText();
-    }
+    private final ILabel lblItemName = getLabel("tvItemBrand", "Item name");
+    private final ILabel lblOriginalItemPrise = getLabel("tvItemOriginalPrice", "Original item prise");
+    private final ILabel lblItemDiscount = getLabel("tvItemDiscount", "Item discount");
+    private final ILabel lblItemPrice = getLabel("tvItemPrice", "Item price");
+    private final ILabel lblSellerName = getLabel("tvItemSellerName", "Seller name");
+    private final ILabel lblSellerCityFrom = getLabel("tvItemSellerCity", "Seller city from");
 
     public void clickOnSeller() {
-        AqualityServices.getLogger().info("Click on seller of item");
-        sellerName.click();
+        lblSellerName.click();
     }
 
-    public void setItemFromItemScreen(){
-        itemFromItemScreen = new Item();
-        itemFromItemScreen.setName(getItemName());
-        itemFromItemScreen.setActualPrise(getItemPrice());
-        itemFromItemScreen.setDiscount(getItemDiscount());
-        itemFromItemScreen.setOriginalPrise(getOriginalItemPrise());
+    public String getItemName(){
+        return lblItemName.getText();
     }
 
-    public Item getItemFromItemScreen(){
-        AqualityServices.getLogger().info("Get Item information from Item screen");
-        setItemFromItemScreen();
-        return itemFromItemScreen;
+    public Item getItemInfo(){
+        AqualityServices.getLogger().info("Get information about item from Item Screen");
+        return Item.builder()
+                .name(getItemName())
+                .discount(lblItemDiscount.getText())
+                .originalPrise(lblOriginalItemPrise.getText())
+                .actualPrise(lblItemPrice.getText())
+                .build();
     }
 
-    public void setSellerFromItemScreen(){
-        sellerFromItemScreen = new Seller();
-        sellerFromItemScreen.setName(getSellerName());
-        sellerFromItemScreen.setCity(getSellerCityNameFrom());
-    }
-
-    public Seller getSellerFromItemScreen(){
-        AqualityServices.getLogger().info("Get Seller information from item screen");
-        setSellerFromItemScreen();
-        return sellerFromItemScreen;
+    public Seller getSellerInfo(){
+        AqualityServices.getLogger().info("Get information about seller from Item Screen");
+        return Seller.builder()
+                .name(lblSellerName.getText())
+                .city(lblSellerCityFrom.getText())
+                .build();
     }
 }

@@ -2,80 +2,42 @@ package screens;
 
 import aquality.appium.mobile.application.AqualityServices;
 import aquality.appium.mobile.elements.interfaces.ILabel;
-import aquality.appium.mobile.screens.Screen;
-import entity.Item;
+import models.Item;
 import org.openqa.selenium.By;
 
-public class MainScreen extends Screen {
+public class MainScreen extends BaseControlsScreen {
 
     public MainScreen() {
-        super(By.id("android:id/content"), "Main application screen");
+        super(By.name("SecretCloset"), "Main screen");
     }
 
-    private static final String locatorTemplate = "com.zdv.secretcloset:id/%s";
-    private final ILabel cityLabel = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvToolbarCity")),
-            "City toolbar label");
-    private final ILabel firstItemWithDiscount = getElementFactory().getLabel(By.id(String
-            .format(locatorTemplate, "rlBanner")), "First Item with discount");
-    private final ILabel itemName = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvBrand")),
-            "Item name");
-    private final ILabel itemPrice = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvSumm")),
-            "Item price");
-    private final ILabel itemActualPrise = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvPrice")),
-            "Item actual price");
-    private final ILabel itemDiscount = getElementFactory().getLabel(By.id(String.format(locatorTemplate, "tvDiscount")),
-            "Item discount");
-
-    private static Item itemFromMainScreen;
+    private final ILabel lblCity = getLabel("tvToolbarCity", "City toolbar");
+    private final ILabel lblItem = getLabel("rlBanner", "Item with discount");
+    private final ILabel lblItemName = getLabel("tvBrand", "Item name");
+    private final ILabel lblItemPrice = getLabel("tvSumm", "Item price");
+    private final ILabel lblItemActualPrise = getLabel("tvPrice", "Item actual price");
+    private final ILabel lblItemDiscount = getLabel("tvDiscount", "Item discount");
 
     public String getToolbarCityName() {
-        AqualityServices.getLogger().info("Get toolbar city name");
-        cityLabel.state().waitForDisplayed();
-        return cityLabel.getText();
+        lblCity.state().waitForDisplayed();
+        return lblCity.getText();
     }
 
     public void clickOnCityLabel(){
-        AqualityServices.getLogger().info("Click on city label");
-        cityLabel.click();
-    }
-
-    public String getNameOfItem() {
-        return itemName.getText();
-    }
-
-    public String getPriceOfItem() {
-        return itemPrice.getText();
-    }
-
-    public String getActualPriceOfItem() {
-        return itemActualPrise.getText();
-    }
-
-    public String getDiscountOfItem() {
-        return itemDiscount.getText();
-    }
-
-    public void setFirstItemWithDiscount(){
-        itemFromMainScreen = new Item();
-        itemFromMainScreen.setName(this.getNameOfItem());
-        itemFromMainScreen.setDiscount(this.getDiscountOfItem());
-        itemFromMainScreen.setOriginalPrise(this.getPriceOfItem());
-        itemFromMainScreen.setActualPrise(this.getActualPriceOfItem());
-    }
-
-    public String getActualItemName(){
-        return itemFromMainScreen.getName();
+        lblCity.click();
     }
 
     public void selectFirstItemWithDiscount(){
-        AqualityServices.getLogger().info("Select first item with discount");
-        this.setFirstItemWithDiscount();
-        firstItemWithDiscount.click();
+        lblItem.click();
     }
 
-    public Item getItemFromMainScreen(){
-        AqualityServices.getLogger().info("Get item information from main screen");
-        return itemFromMainScreen;
+    public Item getItemInfo(){
+        AqualityServices.getLogger().info("Get information about item from Main Screen");
+        return Item.builder()
+                .name(lblItemName.getText())
+                .discount(lblItemDiscount.getText())
+                .originalPrise(lblItemPrice.getText())
+                .actualPrise(lblItemActualPrise.getText())
+                .build();
     }
-
 }

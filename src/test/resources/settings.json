@@ -1,4 +1,5 @@
 {
+  "testData": "test-data",
   "platformName": "android",
   "isRemote": true,
   "remoteConnectionUrl": "http://127.0.0.1:4723/wd/hub",
@@ -6,15 +7,16 @@
   "driverSettings": {
     "android": {
       "deviceKey": "Android_Emulator",
-      "applicationPath": "src/test/resources/apps/SecretCloset.com.apk",
+      "applicationPath": ".src/test/resources/apps/Kickstarter.com.apk",
       "capabilities": {
         "platformName": "Android",
         "automationName": "UiAutomator2"
+
       }
     },
     "ios": {
       "deviceKey": "iOS_Simulator",
-      "applicationPath": "src/test/resources/apps/SecretCloset_v1.05_apkpure.com.apk",
+      "applicationPath": ".src/test/resources/apps/Kickstarter.com.apk",
       "capabilities": {
         "platformName": "iOS",
         "automationName": "XCUITest"
